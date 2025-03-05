@@ -1,3 +1,11 @@
+#---------------------------------------------------
+# Name:        Guess the number
+# Purpose:     to guess the number using while loop
+# Author:      Sachin Vijay
+# Created:     4-Mar-2025
+# Updated:     4-Mar-2025
+#---------------------------------------------------
+
 import random
 
 # Generate a random number between 1 and 10
