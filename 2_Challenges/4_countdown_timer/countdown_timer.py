@@ -5,11 +5,11 @@
 # Created:     4-Mar-2025
 # Updated:     4-Mar-2025
 #---------------------------------------------------
-countdown = 10  # Initialize countdown before the loop
-while countdown > 1:
+countdown = 10
+while countdown > 0:
     print(countdown)
-    countdown -= 1  # Decrement countdown
     response = input("Should I stop?")
+    countdown -= 1  # Decrement countdown
     if response == "yes":
         break
     else:

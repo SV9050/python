@@ -12,7 +12,7 @@ import random
 Random_Number = random.randint(1, 10)
 
 # Start the guessing loop
-while True:
+while True :
     # Ask the user to guess the number
     guess = int(input("Guess a number between 1 and 10: "))
 
