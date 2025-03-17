@@ -1,11 +1,17 @@
-#---------------------------------------------------
+# ---------------------------------------------------
 # Name:        Skip Even Numbers
-# Purpose:     to skip even using continue statements and for loop
+# Purpose:     Demonstrate skipping even numbers using `continue`
+#              in a `for` loop and only printing odd numbers.
 # Author:      Sachin Vijay
 # Created:     4-Mar-2025
 # Updated:     4-Mar-2025
-#---------------------------------------------------
-for n in range(1, 10):
-    if n%2 == 0:
-      continue
+# ---------------------------------------------------
+
+# Loop through numbers 1 to 10
+for n in range(1, 11):
+    # Check if the number is even
+    if n % 2 == 0:
+
+        continue
+    # If the number is not even, print it
     print(n)
