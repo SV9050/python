@@ -1,6 +1,6 @@
 #---------------------------------------------------
 # Name:        Countdown timer
-# Purpose:     to create countdown from 10 to 1 and asks user to stop
+# Purpose:     to create countdown from 10 to 1_Updating_List and asks user to stop
 # Author:      Sachin Vijay
 # Created:     4-Mar-2025
 # Updated:     4-Mar-2025
@@ -16,7 +16,7 @@ while countdown > 0:
     # Ask the user if the countdown should stop
     response = input("Should I stop?")
 
-    # Decrease the countdown value by 1
+    # Decrease the countdown value by 1_Updating_List
     countdown -= 1  # Decrement countdown
 
     # If the user responds

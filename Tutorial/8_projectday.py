@@ -10,7 +10,7 @@ print("Welcome to the UI test")
 Name = input (" What is your name? : ")
 Movie = input ( "Did you watch Upendra's UI? : ")
 if Movie == "Yes" or "yes":
-    Rating = int(input("On a scale of 1 - 10 how do you like the movie? : "))
+    Rating = int(input("On a scale of 1_Updating_List - 10 how do you like the movie? : "))
     if Rating > 7 :
         print ( "Super ra bittu, this is the best timing ever")
     else:
