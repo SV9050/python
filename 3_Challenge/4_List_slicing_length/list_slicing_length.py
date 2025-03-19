@@ -1,6 +1,14 @@
+#---------------------------------------------------
+# Name:       Slicing items on list using index
+# Purpose:     Modifying an existing item in a list
+# Author:      Sachin Vijay
+# Created:     19-Mar-2025
+# Updated:     19-Mar-2025
+# ---------------------------------------------------
+
 colors = ['red', 'blue', 'green', 'yellow', 'purple']
-
-# Use slicing with the del statement to remove indices 1 to 3
-gube = colors.remove[1:3]
-
-print(gube)
+two = colors[1:3]
+del colors[1:3]
+print(two)
+print (len(colors))
+print(colors)
