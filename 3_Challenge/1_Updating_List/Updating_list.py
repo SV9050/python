@@ -1,7 +1,7 @@
 #---------------------------------------------------
 # Name:        Updating Lists
 # Purpose:     Updating the list based on user's input
-# Author:      Sachin Vijay
+# Author:      Sachin
 # Created:     18-Mar-2025
 # Updated:     18-Mar-2025
 # ---------------------------------------------------
