@@ -1,7 +1,7 @@
 #---------------------------------------------------
 # Name:        Access and Modify Lists
 # Purpose:     Modifying an existing item in a list
-# Author:      Sachin Vijay
+# Author:      Sachin
 # Created:     18-Mar-2025
 # Updated:     18-Mar-2025
 # ---------------------------------------------------
