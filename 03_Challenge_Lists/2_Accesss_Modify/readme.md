@@ -1,6 +1,6 @@
 PSEUDO CODE
 
-1.Create a list called `grocery_list` with items: `'Apple'`, `'bananas'`, `'carrots'`, `'milk' , 'bread' `.
+1. Create a list called `grocery_list` with items: `'Apple'`, `'bananas'`, `'carrots'`, `'milk' , 'bread' `.
 
 2. Print the entire `grocery_list`.
 

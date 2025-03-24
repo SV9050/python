@@ -1,23 +1,23 @@
 PSEUDO CODE
 
-Create a todo_list with ['Call your mom' , 'clean room'] being mandatory
+1. Create a todo_list with ['Call your mom' , 'clean room'] being mandatory
 
-Ask user to input an item to remove
+2. Ask user to input an item to remove and store it in a variable
     
-IF the input item matches 'call mom' THEN remove the item from the list
+3. IF the input item matches 'call mom' THEN remove the item from the list
 
-Print the updated list
+4. Print the updated list
     
-ELSE
-Print message: "call your mom"
+5. ELSE
 
-Ask user to input another item to remove
+6. Print message: "call your mom"
+
+7. Ask user to input another item to remove
     
-IF the input item matches 'clean room' THEN remove the item from the list
+8. IF the input item matches 'clean room' THEN remove the item from the list
 
-Print the updated list
+9. Print the updated list
     
-ELSE
-Print message: "clean your room"
+10. ELSE
 
-END
+11. Print message: "clean your room"
