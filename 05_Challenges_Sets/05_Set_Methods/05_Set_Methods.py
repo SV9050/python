@@ -15,7 +15,7 @@ data_copy = data.copy()
 # Print the copied set
 print('Copy:', data_copy)
 
-# Remove and return an arbitrary element from the set
+# Remove and return an RANDOM element from the set
 data.pop()
 
 # Print the set after removing one element

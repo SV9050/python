@@ -7,7 +7,7 @@
 # ---------------------------------------------------
 
 # Given sentence
-sentence = " Family and friends are the best"
+sentence = "Karmanye Vadhikaraste Ma Phaleshu Kadachana"
 
 # Convert sentence into a set of words by splitting the sentence into words
 unique_words = set(sentence.split())
