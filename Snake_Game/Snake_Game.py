@@ -12,7 +12,7 @@ BLACK, WHITE, GREEN = (0, 0, 0), (255, 255, 255), (0, 255, 0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Simple Snake Game")
 clock = pygame.time.Clock()
-font = pygame.font.SysFont("Arial", 24)
+font = pygame.font.SysFont("Arial", 15)
 
 # Draw messages
 def show_message(text, color, y_offset=0):
@@ -83,4 +83,5 @@ def game_loop():
 # Start the game
 show_intro()
 game_loop()
+
 
