@@ -6,8 +6,10 @@ import time
 pygame.init()
 
 # Game settings
-WIDTH, HEIGHT = 320, 240
-BLOCK_SIZE, SPEED = 10, 15
+WIDTH, HEIGHT = 640, 480
+BLOCK_SIZE = 20       # Snake is bigger
+FOOD_SIZE = 15          # Food is smaller
+SPEED = 12
 BLACK, WHITE, GREEN = (0, 0, 0), (255, 255, 255), (0, 255, 0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Simple Snake Game")
@@ -48,8 +50,8 @@ def game_loop():
     x, y = WIDTH // 2, HEIGHT // 2
     dx, dy, length = 0, 0, 1
     snake = [[x, y]]
-    food_x = random.randrange(0, WIDTH, BLOCK_SIZE)
-    food_y = random.randrange(0, HEIGHT, BLOCK_SIZE)
+    food_x = random.randrange(0, WIDTH - FOOD_SIZE, BLOCK_SIZE)
+    food_y = random.randrange(0, HEIGHT - FOOD_SIZE, BLOCK_SIZE)
     running = True
     while running:
         for event in pygame.event.get():
@@ -69,11 +71,13 @@ def game_loop():
             pygame.display.update()
             time.sleep(2)
             break
-        if x == food_x and y == food_y:
-            food_x, food_y = random.randrange(0, WIDTH, BLOCK_SIZE), random.randrange(0, HEIGHT, BLOCK_SIZE)
+        # Check for collision with food
+        if abs(x - food_x) < BLOCK_SIZE and abs(y - food_y) < BLOCK_SIZE:
+            food_x = random.randrange(0, WIDTH - FOOD_SIZE, BLOCK_SIZE)
+            food_y = random.randrange(0, HEIGHT - FOOD_SIZE, BLOCK_SIZE)
             length += 1
         screen.fill(BLACK)
-        pygame.draw.rect(screen, WHITE, (food_x, food_y, BLOCK_SIZE, BLOCK_SIZE))
+        pygame.draw.rect(screen, WHITE, (food_x, food_y, FOOD_SIZE, FOOD_SIZE))  # smaller food
         draw_snake(snake)
         show_score(length - 1)
         pygame.display.update()
