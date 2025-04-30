@@ -14,7 +14,7 @@ BLACK, WHITE, GREEN, YELLOW = (0, 0, 0), (255, 255, 255), (0, 255, 0), (255, 255
 
 # Setup display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Simple Snake Game")
+pygame.display.set_caption("Sachin's Snake Game")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("Arial", 24)
 
@@ -38,7 +38,7 @@ def show_score(score):
 def show_intro():
     while True:
         screen.fill(BLACK)
-        show_message("Snake Game", WHITE, -60)
+        show_message("Sacxx's Snake Game", WHITE, -60)
         show_message("Press SPACE to Start", WHITE)
         show_message("Press Q to Quit", WHITE, 40)
         pygame.display.update()
@@ -72,7 +72,7 @@ def game_loop():
 
         # Collision with self
         if [x, y] in snake[:-1]:
-            show_message("Game Over!", WHITE)
+            show_message("FY - NISHID  ", WHITE)
             show_score(length - 1)
             pygame.display.update()
             time.sleep(2)
