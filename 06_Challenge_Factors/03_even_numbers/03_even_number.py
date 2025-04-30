@@ -9,7 +9,8 @@
 def is_even(number):
     return number % 2 == 0
 
-# Example usage
-print(is_even(6))  # Output: True
-print(is_even(7))  # Output: False
+#  user input
+user_input = int(input("Enter a number: "))
+print(is_even(user_input))
+
 
