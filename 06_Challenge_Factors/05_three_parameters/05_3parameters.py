@@ -6,11 +6,12 @@
 # Updated:     30-Apr-2025
 # ---------------------------------------------------
 
-def is_even(number):
-    return number % 2 == 0
+def tax(revenue, expense):
+    payable = revenue -expense * 0.18
+    print (payable)
 
-#  user input
-user_input = int(input("Enter a number: "))
-print(is_even(user_input))
+tax(10,5)
+
+
 
 
