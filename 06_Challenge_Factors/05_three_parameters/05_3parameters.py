@@ -6,11 +6,12 @@
 # Updated:     30-Apr-2025
 # ---------------------------------------------------
 
-def tax(revenue, expense):
-    payable = revenue -expense * 0.18
-    print (payable)
+def tax(revenue, expense, unearned_revenue):
+    payable = (revenue + unearned_revenue - expense) * 0.18
+    print('Tax Payable is', payable)
 
-tax(10,5)
+tax(10000, 6000, 2000)
+
 
 
 
