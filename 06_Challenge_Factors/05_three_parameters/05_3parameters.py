@@ -1,9 +1,9 @@
 #---------------------------------------------------
-# Name:        True or Else
-# Purpose:     to check if a variable is even number
+# Name:        3 Parameters
+# Purpose:     to create a function that allows three parameters to be passed
 # Author:      Sachin
-# Created:     30-Apr-2025
-# Updated:     30-Apr-2025
+# Created:     02-May-2025
+# Updated:     02-May-2025
 # ---------------------------------------------------
 
 def tax(revenue, expense, unearned_revenue):
