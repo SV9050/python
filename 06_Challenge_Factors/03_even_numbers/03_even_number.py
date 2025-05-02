@@ -11,6 +11,7 @@ def is_even(number):
 
 #  user input
 user_input = int(input("Enter a number: "))
+
 print(is_even(user_input))
 
 

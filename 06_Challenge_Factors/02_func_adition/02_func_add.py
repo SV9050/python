@@ -12,5 +12,5 @@ def add_numbers(a, b):
     return a + b
 
 # Example usage
-print(add_numbers(a, b))  # Output: 7
+print(add_numbers(a, b))  # Output
 
