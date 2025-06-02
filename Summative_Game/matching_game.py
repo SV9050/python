@@ -1,4 +1,4 @@
-import pygame, random, sys, math
+import pygame, random, sys
 
 # --- Config ---
 W, H, ROWS, COLS, SZ, M, HEAD = 600, 700, 4, 4, 120, 20, 80
@@ -8,44 +8,15 @@ pygame.init()
 FONT = pygame.font.SysFont(None, 60)
 SMALL = pygame.font.SysFont(None, 40)
 screen = pygame.display.set_mode((W, H))
-pygame.display.set_caption("Memory Match - Shapes")
+pygame.display.set_caption("Memory Match - Letters")
 
-SHAPES = ['circle', 'square', 'triangle', 'star', 'diamond', 'cross', 'heart', 'hexagon']
+# Use 8 letters, each appears twice for 4x4 grid
+Alphabets = list("ABCDEFGH")
 
 def create_board():
-    s = SHAPES * 2  # 8 shapes * 2 = 16 tiles
-    random.shuffle(s)
-    return [s[i:i+COLS] for i in range(0, ROWS*COLS, COLS)]
-
-def draw_shape(shape, rect):
-    cx, cy = rect.center
-    if shape == 'circle':
-        pygame.draw.circle(screen, TXT, (cx, cy), SZ//3)
-    elif shape == 'square':
-        pygame.draw.rect(screen, TXT, pygame.Rect(cx-SZ//4, cy-SZ//4, SZ//2, SZ//2))
-    elif shape == 'triangle':
-        points = [(cx, cy-SZ//3), (cx-SZ//3, cy+SZ//3), (cx+SZ//3, cy+SZ//3)]
-        pygame.draw.polygon(screen, TXT, points)
-    elif shape == 'star':
-        pygame.draw.circle(screen, TXT, (cx, cy), SZ//10)
-        pygame.draw.line(screen, TXT, (cx, cy-SZ//3), (cx, cy+SZ//3), 3)
-        pygame.draw.line(screen, TXT, (cx-SZ//3, cy), (cx+SZ//3, cy), 3)
-    elif shape == 'diamond':
-        points = [(cx, cy-SZ//3), (cx-SZ//3, cy), (cx, cy+SZ//3), (cx+SZ//3, cy)]
-        pygame.draw.polygon(screen, TXT, points)
-    elif shape == 'cross':
-        pygame.draw.line(screen, TXT, (cx-SZ//3, cy-SZ//3), (cx+SZ//3, cy+SZ//3), 3)
-        pygame.draw.line(screen, TXT, (cx+SZ//3, cy-SZ//3), (cx-SZ//3, cy+SZ//3), 3)
-    elif shape == 'heart':
-        pygame.draw.circle(screen, TXT, (cx - SZ//5, cy - SZ//5), SZ//5)
-        pygame.draw.circle(screen, TXT, (cx + SZ//5, cy - SZ//5), SZ//5)
-        points = [(cx - SZ//3, cy - SZ//12), (cx, cy + SZ//3), (cx + SZ//3, cy - SZ//12)]
-        pygame.draw.polygon(screen, TXT, points)
-    elif shape == 'hexagon':
-        r = SZ // 3
-        points = [(cx + r * math.cos(i * math.pi / 3),
-                   cy + r * math.sin(i * math.pi / 3)) for i in range(6)]
-        pygame.draw.polygon(screen, TXT, points)
+    a = Alphabets * 2  # 8 letters * 2 = 16 tiles
+    random.shuffle(a)
+    return [a[i:i+COLS] for i in range(0, ROWS*COLS, COLS)]
 
 def draw(grid, revealed, matched, moves, win):
     screen.fill(BG)
@@ -56,7 +27,8 @@ def draw(grid, revealed, matched, moves, win):
             color = REV if revealed[r][c] or matched[r][c] else TILE
             pygame.draw.rect(screen, color, rect)
             if revealed[r][c] or matched[r][c]:
-                draw_shape(grid[r][c], rect)
+                text = FONT.render(grid[r][c], True, TXT)
+                screen.blit(text, (rect.centerx - text.get_width() // 2, rect.centery - text.get_height() // 2))
     screen.blit(SMALL.render(f"Moves: {moves}", True, WHITE), (20, 20))
     if win:
         t = FONT.render(f"You won in {moves} moves!", True, WHITE)
@@ -81,7 +53,9 @@ def main():
         draw(grid, revealed, matched, moves, win)
         pygame.display.flip()
         for e in pygame.event.get():
-            if e.type == pygame.QUIT: pygame.quit(); sys.exit()
+            if e.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             if e.type == pygame.MOUSEBUTTONDOWN and not win:
                 tile = get_tile(pygame.mouse.get_pos())
                 if tile:
@@ -101,7 +75,8 @@ def main():
                             else:
                                 revealed[r1][c1] = revealed[r][c] = 0
                             first = None
-                            if all(all(row) for row in matched): win = True
+                            if all(all(row) for row in matched):
+                                win = True
         clock.tick(30)
 
 if __name__ == "__main__":
