@@ -1,119 +1,108 @@
-import pygame
-import random
-import time
-import sys
+import pygame, random, sys, math
 
-# Initialize Pygame
+# --- Config ---
+W, H, ROWS, COLS, SZ, M, HEAD = 600, 700, 4, 4, 120, 20, 80
+BG, TILE, REV, TXT, WHITE = (30,30,30), (80,80,200), (200,200,255), (0,0,0), (255,255,255)
+
 pygame.init()
-
-# Screen settings
-WIDTH, HEIGHT = 600, 700
-ROWS, COLS = 4, 4
-TILE_SIZE = 120
-MARGIN = 20
 FONT = pygame.font.SysFont(None, 60)
-SMALL_FONT = pygame.font.SysFont(None, 40)
+SMALL = pygame.font.SysFont(None, 40)
+screen = pygame.display.set_mode((W, H))
+pygame.display.set_caption("Memory Match - Shapes")
 
-# Colors
-BG_COLOR = (30, 30, 30)
-TILE_COLOR = (80, 80, 200)
-REVEALED_COLOR = (200, 200, 255)
-TEXT_COLOR = (0, 0, 0)
-WHITE = (255, 255, 255)
+SHAPES = ['circle', 'square', 'triangle', 'star', 'diamond', 'cross', 'heart', 'hexagon']
 
-# Create screen
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Memory Match - Pygame")
+def create_board():
+    s = SHAPES * 2  # 8 shapes * 2 = 16 tiles
+    random.shuffle(s)
+    return [s[i:i+COLS] for i in range(0, ROWS*COLS, COLS)]
 
-# Setup board
-symbols = list("AABBCCDDEEFFGGHH")
-random.shuffle(symbols)
-grid = [symbols[i:i + COLS] for i in range(0, 16, COLS)]
-revealed = [[False] * COLS for _ in range(ROWS)]
-matched = [[False] * COLS for _ in range(ROWS)]
+def draw_shape(shape, rect):
+    cx, cy = rect.center
+    if shape == 'circle':
+        pygame.draw.circle(screen, TXT, (cx, cy), SZ//3)
+    elif shape == 'square':
+        pygame.draw.rect(screen, TXT, pygame.Rect(cx-SZ//4, cy-SZ//4, SZ//2, SZ//2))
+    elif shape == 'triangle':
+        points = [(cx, cy-SZ//3), (cx-SZ//3, cy+SZ//3), (cx+SZ//3, cy+SZ//3)]
+        pygame.draw.polygon(screen, TXT, points)
+    elif shape == 'star':
+        pygame.draw.circle(screen, TXT, (cx, cy), SZ//10)
+        pygame.draw.line(screen, TXT, (cx, cy-SZ//3), (cx, cy+SZ//3), 3)
+        pygame.draw.line(screen, TXT, (cx-SZ//3, cy), (cx+SZ//3, cy), 3)
+    elif shape == 'diamond':
+        points = [(cx, cy-SZ//3), (cx-SZ//3, cy), (cx, cy+SZ//3), (cx+SZ//3, cy)]
+        pygame.draw.polygon(screen, TXT, points)
+    elif shape == 'cross':
+        pygame.draw.line(screen, TXT, (cx-SZ//3, cy-SZ//3), (cx+SZ//3, cy+SZ//3), 3)
+        pygame.draw.line(screen, TXT, (cx+SZ//3, cy-SZ//3), (cx-SZ//3, cy+SZ//3), 3)
+    elif shape == 'heart':
+        pygame.draw.circle(screen, TXT, (cx - SZ//5, cy - SZ//5), SZ//5)
+        pygame.draw.circle(screen, TXT, (cx + SZ//5, cy - SZ//5), SZ//5)
+        points = [(cx - SZ//3, cy - SZ//12), (cx, cy + SZ//3), (cx + SZ//3, cy - SZ//12)]
+        pygame.draw.polygon(screen, TXT, points)
+    elif shape == 'hexagon':
+        r = SZ // 3
+        points = [(cx + r * math.cos(i * math.pi / 3),
+                   cy + r * math.sin(i * math.pi / 3)) for i in range(6)]
+        pygame.draw.polygon(screen, TXT, points)
 
-first_click = None
-moves = 0
-game_over = False
-
-def draw_grid():
-    screen.fill(BG_COLOR)
-    for row in range(ROWS):
-        for col in range(COLS):
-            x = MARGIN + col * (TILE_SIZE + MARGIN)
-            y = MARGIN + row * (TILE_SIZE + MARGIN) + 80
-            rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
-
-            if revealed[row][col] or matched[row][col]:
-                pygame.draw.rect(screen, REVEALED_COLOR, rect)
-                symbol = FONT.render(grid[row][col], True, TEXT_COLOR)
-                screen.blit(symbol, (x + TILE_SIZE // 3, y + TILE_SIZE // 4))
-            else:
-                pygame.draw.rect(screen, TILE_COLOR, rect)
-
-    # Draw move counter
-    move_text = SMALL_FONT.render(f"Moves: {moves}", True, WHITE)
-    screen.blit(move_text, (20, 20))
-
-    if game_over:
-        win_text = FONT.render(f"You won in {moves} moves!", True, WHITE)
-        screen.blit(win_text, (WIDTH // 2 - win_text.get_width() // 2, HEIGHT - 60))
+def draw(grid, revealed, matched, moves, win):
+    screen.fill(BG)
+    for r in range(ROWS):
+        for c in range(COLS):
+            x, y = M + c*(SZ+M), M + r*(SZ+M) + HEAD
+            rect = pygame.Rect(x, y, SZ, SZ)
+            color = REV if revealed[r][c] or matched[r][c] else TILE
+            pygame.draw.rect(screen, color, rect)
+            if revealed[r][c] or matched[r][c]:
+                draw_shape(grid[r][c], rect)
+    screen.blit(SMALL.render(f"Moves: {moves}", True, WHITE), (20, 20))
+    if win:
+        t = FONT.render(f"You won in {moves} moves!", True, WHITE)
+        screen.blit(t, (W//2 - t.get_width()//2, H - 60))
 
 def get_tile(pos):
-    x, y = pos
-    y -= 80  # adjust for header
-    for row in range(ROWS):
-        for col in range(COLS):
-            tx = MARGIN + col * (TILE_SIZE + MARGIN)
-            ty = MARGIN + row * (TILE_SIZE + MARGIN)
-            rect = pygame.Rect(tx, ty, TILE_SIZE, TILE_SIZE)
-            if rect.collidepoint(x, y):
-                return row, col
+    x, y = pos[0], pos[1] - HEAD
+    for r in range(ROWS):
+        for c in range(COLS):
+            tx, ty = M + c*(SZ+M), M + r*(SZ+M)
+            if pygame.Rect(tx, ty, SZ, SZ).collidepoint(x, y):
+                return r, c
     return None
 
-clock = pygame.time.Clock()
-running = True
-
-while running:
-    draw_grid()
-    pygame.display.flip()
-    clock.tick(30)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            break
-
-        if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
-            pos = pygame.mouse.get_pos()
-            tile = get_tile(pos)
-            if tile:
-                r, c = tile
-                if not revealed[r][c] and not matched[r][c]:
-                    revealed[r][c] = True
-                    if not first_click:
-                        first_click = (r, c)
-                    else:
-                        second_click = (r, c)
-                        moves += 1
-                        draw_grid()
-                        pygame.display.flip()
-                        pygame.time.delay(600)
-
-                        # Check match
-                        r1, c1 = first_click
-                        r2, c2 = second_click
-                        if grid[r1][c1] == grid[r2][c2]:
-                            matched[r1][c1] = True
-                            matched[r2][c2] = True
+def main():
+    grid = create_board()
+    revealed = [[0]*COLS for _ in range(ROWS)]
+    matched = [[0]*COLS for _ in range(ROWS)]
+    first, moves, win = None, 0, False
+    clock = pygame.time.Clock()
+    while True:
+        draw(grid, revealed, matched, moves, win)
+        pygame.display.flip()
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT: pygame.quit(); sys.exit()
+            if e.type == pygame.MOUSEBUTTONDOWN and not win:
+                tile = get_tile(pygame.mouse.get_pos())
+                if tile:
+                    r, c = tile
+                    if not revealed[r][c] and not matched[r][c]:
+                        revealed[r][c] = 1
+                        if not first:
+                            first = (r, c)
                         else:
-                            revealed[r1][c1] = False
-                            revealed[r2][c2] = False
-                        first_click = None
+                            r1, c1 = first
+                            moves += 1
+                            draw(grid, revealed, matched, moves, win)
+                            pygame.display.flip()
+                            pygame.time.delay(600)
+                            if grid[r1][c1] == grid[r][c]:
+                                matched[r1][c1] = matched[r][c] = 1
+                            else:
+                                revealed[r1][c1] = revealed[r][c] = 0
+                            first = None
+                            if all(all(row) for row in matched): win = True
+        clock.tick(30)
 
-                        # Check win
-                        if all(all(row) for row in matched):
-                            game_over = True
-
-pygame.quit()
-sys.exit()
+if __name__ == "__main__":
+    main()
