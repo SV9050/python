@@ -1,3 +1,13 @@
+#---------------------------------------------------
+# Name:        MATCHING GAME
+# Purpose:     To program a matching tile game using pygame.
+# Author:      Sachin
+# Created:     10-June-2025
+# Updated:     17-June-2025
+# ---------------------------------------------------
+
+
+#This code helps in setting the game window, size and others. The Pygame sets up the display and fonts for showing text and symbols during the play.
 import pygame, random, sys
 
 # --- Config ---
@@ -13,13 +23,13 @@ pygame.display.set_caption("Memory Match - Symbols")
 # Only symbols used
 SYMBOLS = list("!@#$%^&*")
 
-
+#The game board is created to make sure a new puzzle is generated each time. Symbols are duplicated and then shuffled to create random pairs across the grid.
 def create_board():
     symbols = SYMBOLS * 2
     random.shuffle(symbols)
     return [symbols[i:i + COLS] for i in range(0, ROWS * COLS, COLS)]
 
-
+#This function controls the rendering of the game. It draws each tile, which shows symbols for active or matched pairs, and displays the move count.
 def draw(grid, revealed, matched, moves, win):
     screen.fill(BG)
     for r in range(ROWS):
@@ -39,7 +49,7 @@ def draw(grid, revealed, matched, moves, win):
         screen.blit(instruction, (W // 2 - instruction.get_width() // 2, H - 80))
     pygame.display.flip()
 
-
+# Function to get the tile position based on mouse click by converting click to cordinates
 def get_tile(pos):
     x, y = pos[0], pos[1] - HEAD
     for r in range(ROWS):
@@ -50,6 +60,7 @@ def get_tile(pos):
     return None
 
 
+# This loops helps to run the game continuously until the tiles are matched
 def main():
     grid = create_board()
     revealed = [[0] * COLS for _ in range(ROWS)]
